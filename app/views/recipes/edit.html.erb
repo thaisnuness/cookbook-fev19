@@ -1,4 +1,17 @@
+<ul>
+  <% if @recipe.errors.any? %>
+    <li>Não foi possível salvar a receita</li>
+    <% @recipe.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  <% end %>
+ 
+</ul>
+
 <%= form_for @recipe do |f| %>
+  
+
+
     <%= f.label :title, 'Título' %>
     <%= f.text_field :title %>
     <%= f.label :recipe_type, 'Tipo da Receita' %>
