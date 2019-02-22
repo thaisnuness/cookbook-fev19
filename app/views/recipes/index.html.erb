@@ -3,12 +3,13 @@
 
 <%= link_to 'Enviar uma receita', new_recipe_path %>
 <%= link_to 'Cadastrar tipo de receita', new_recipe_type_path %>
+<%= link_to 'Cadastrar tipo de cozinha', new_cuisine_path %>
 
 <% @recipes.each do |recipe| %>
   <h1><%= link_to recipe.title, recipe %></h1>
   <ul>
     <li><%= recipe.recipe_type.name %></li>
-    <li><%= recipe.cuisine %></li>
+    <li><%= recipe.cuisine.name %></li>
     <li><%= recipe.difficulty %></li>
     <li><%= recipe.cook_time_min %></li>
   </ul>

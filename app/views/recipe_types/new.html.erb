@@ -1,3 +1,4 @@
+<p><%= flash[:errors] %></p>
 <%= form_for @recipe_type do |f| %>
   <%= f.label :name, 'Nome' %>
   <%= f.text_field :name %>

@@ -12,8 +12,13 @@ class RecipeTypesController < ApplicationController
   end
 
   def create
-    @recipe_type = RecipeType.create(recipe_type_params)
-    redirect_to @recipe_type
+    @recipe_type = RecipeType.new(recipe_type_params)
+    if @recipe_type.save
+      redirect_to @recipe_type
+    else
+      flash[:errors] = "Você deve informar o nome do tipo de receita"
+      render :new
+    end
   end
 
   private

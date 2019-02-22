@@ -5,6 +5,7 @@ feature 'User register recipe' do
     #cria os dados necessários, nesse caso não vamos criar dados no banco
     RecipeType.create(name: 'Sobremesa')
     RecipeType.create(name: 'Entrada')
+    Cuisine.create(name: 'Arabe')
 
     # simula a ação do usuário
     visit root_path
@@ -12,11 +13,12 @@ feature 'User register recipe' do
 
     fill_in 'Título', with: 'Tabule'
     select 'Entrada', from: 'Tipo da Receita'
-    fill_in 'Cozinha', with: 'Arabe'
+    select 'Arabe', from: 'Cozinha'
     fill_in 'Dificuldade', with: 'Fácil'
     fill_in 'Tempo de Preparo', with: '45'
     fill_in 'Ingredientes', with: 'Trigo para quibe, cebola, tomate picado, azeite, salsinha'
     fill_in 'Como Preparar', with: 'Misturar tudo e servir. Adicione limão a gosto.'
+    attach_file 'Foto', Rails.root.join('spec', 'support', 'Tabule.jpg')
     click_on 'Enviar'
 
 
@@ -31,6 +33,7 @@ feature 'User register recipe' do
     expect(page).to have_css('p', text: 'Trigo para quibe, cebola, tomate picado, azeite, salsinha')
     expect(page).to have_css('h3', text: 'Como Preparar')
     expect(page).to have_css('p', text:  'Misturar tudo e servir. Adicione limão a gosto.')
+    expect(page).to have_css('img[src*="Tabule.jpg"]')
   end
 
   scenario 'and must fill in all fields' do
@@ -39,7 +42,6 @@ feature 'User register recipe' do
     click_on 'Enviar uma receita'
 
     fill_in 'Título', with: ''
-    fill_in 'Cozinha', with: ''
     fill_in 'Dificuldade', with: ''
     fill_in 'Tempo de Preparo', with: ''
     fill_in 'Ingredientes', with: ''
