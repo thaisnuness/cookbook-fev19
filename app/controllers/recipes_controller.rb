@@ -24,6 +24,13 @@ class RecipesController < ApplicationController
     end
   end
 
+  def destroy
+    @recipe = Recipe.find(params[:id])
+    @recipe.destroy
+    flash[:errors] = "Receita deletada com sucesso"
+    redirect_to root_path
+  end
+
   def edit
     @recipe = Recipe.find(params[:id]) 
     @recipe_types = RecipeType.all 
@@ -45,6 +52,6 @@ class RecipesController < ApplicationController
 
   def recipe_params
     params.require(:recipe).permit(:title, :recipe_type_id, :cuisine_id, :difficulty,
-                                   :cook_time, :ingredients, :cook_method)
+                                   :cook_time, :ingredients, :cook_method, :photo)
   end
 end

@@ -5,6 +5,10 @@
 <%= link_to 'Cadastrar tipo de receita', new_recipe_type_path %>
 <%= link_to 'Cadastrar tipo de cozinha', new_cuisine_path %>
 
+<ul>
+  <li><%= flash[:errors]%></li>
+</ul>
+
 <% @recipes.each do |recipe| %>
   <h1><%= link_to recipe.title, recipe %></h1>
   <ul>
