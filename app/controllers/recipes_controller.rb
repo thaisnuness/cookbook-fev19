@@ -1,6 +1,7 @@
 class RecipesController < ApplicationController
   def index
     @recipes = Recipe.all
+    @recipe_featured = Recipe.where(featured: true)
   end
 
   def show
@@ -48,10 +49,19 @@ class RecipesController < ApplicationController
     end
   end
 
+  def search
+    @recipes = Recipe.where("title LIKE '%#{params[:q]}%'")
+  end
+
+  def featured
+    @recipe = Recipe.find(params[:id]) 
+    @recipe.update(featured: true)
+    redirect_to root_path
+  end
   private
 
   def recipe_params
     params.require(:recipe).permit(:title, :recipe_type_id, :cuisine_id, :difficulty,
-                                   :cook_time, :ingredients, :cook_method, :photo)
+                                   :cook_time, :ingredients, :cook_method, :photo, :featured)
   end
 end

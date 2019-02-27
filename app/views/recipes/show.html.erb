@@ -2,7 +2,7 @@
   <% if @recipe.photo.attached? %>
     <li><%= image_tag @recipe.photo %></li>
   <% end %>
-  </ul>
+</ul>
 
 
 
@@ -19,4 +19,9 @@
 
 <%= link_to 'Editar', edit_recipe_path(@recipe) %>
 <%= link_to 'Excluir', recipe_path(@recipe), method: :delete %>
+<% if @recipe.featured? %>
+  <%= link_to 'Destaque', featured_recipe_path(@recipe), method: :post %>
+<% else %>
+  <%= link_to 'Remover Destaque', unfeatured_recipe_path(@recipe), method: :post %>
+<% end %>
 <%= link_to 'Voltar', root_path %>

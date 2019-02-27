@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_22_010147) do
+ActiveRecord::Schema.define(version: 2019_02_26_225043) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2019_02_22_010147) do
     t.text "cook_method"
     t.integer "recipe_type_id"
     t.integer "cuisine_id"
+    t.boolean "featured"
     t.index ["cuisine_id"], name: "index_recipes_on_cuisine_id"
     t.index ["recipe_type_id"], name: "index_recipes_on_recipe_type_id"
   end

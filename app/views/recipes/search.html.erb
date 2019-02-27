@@ -1,0 +1,8 @@
+<% if @recipes.any? %>
+  <p><%= Recipe.count %> receitas encontradas</p>
+  <% @recipes.each do |recipe| %>
+    <h2><%= link_to recipe.title, recipe %></h2>
+  <% end %>
+<% else %>
+  <p>Nenhuma receita encontrada</p>
+<% end %>
