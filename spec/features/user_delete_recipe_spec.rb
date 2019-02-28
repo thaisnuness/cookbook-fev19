@@ -8,12 +8,15 @@ feature 'User delete recipe' do
                   recipe_type: recipe_type, cuisine: cuisine,
                   cook_time: 50, ingredients: 'Farinha, açucar, cenoura',
                   cook_method: 'Cozinhe a cenoura, corte em pedaços pequenos, misture com o restante dos ingredientes')
+    user = User.create!(email: 'user1@email.com', password: 'user123')
 
     # simula a ação do usuário
+    login_as user, scope: :user
     visit root_path
     click_on 'Bolo de cenoura'
     click_on 'Excluir'
 
+    
     expect(current_path).to eq root_path
     expect(page).to have_content('Receita deletada com sucesso')
     expect(Recipe.count).to eq 0
@@ -31,8 +34,11 @@ feature 'User delete recipe' do
                   recipe_type: recipe_type, cuisine: cuisine,
                   cook_time: 45, ingredients: 'Farinha, açucar, chocolate',
                   cook_method: 'Derreta o chocolate, e misture com o restante dos ingredientes')
+    user = User.create!(email: 'user1@email.com', password: 'user123')
     
     #simula ação do usuário
+    login_as user, scope: :user
+
     visit root_path
     click_on 'Bolo de chocolate'
     click_on 'Excluir'

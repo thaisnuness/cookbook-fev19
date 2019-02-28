@@ -37,7 +37,7 @@ feature 'User mark featured recipe' do
     end
   
     within 'div#other_recipes' do
-      expect(page).not_to have_css('h1', text: new_recipe.title)
+      expect(page).to have_css('h1', text: new_recipe.title)
     end
     #expect(new_recipe.featured).to eq true
     expect(new_recipe).not_to be_featured

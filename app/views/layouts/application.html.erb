@@ -10,6 +10,8 @@
   </head>
 
   <body>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
     <%= form_tag(search_recipes_path, method: "get") do %>
       <%= label_tag(:q, "Buscar") %>
       <%= text_field_tag(:q) %>

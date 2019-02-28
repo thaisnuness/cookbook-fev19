@@ -1,7 +1,16 @@
+<% if user_signed_in? %>
+  <span><%= current_user %></span>
+  <%= link_to 'Logout', destroy_user_session_path, method: :delete%>
+<% else %>
+  <%= link_to 'Log in', new_user_session_path %>
+<% end %>
 <h1>CookBook</h1>
 <p>Bem-vindo ao maior livro de receitas online</p>
 
-<%= link_to 'Enviar uma receita', new_recipe_path %>
+<% if user_signed_in? %>
+  <%= link_to 'Enviar uma receita', new_recipe_path %>
+<% end %>
+
 <%= link_to 'Cadastrar tipo de receita', new_recipe_type_path %>
 <%= link_to 'Cadastrar tipo de cozinha', new_cuisine_path %>
 
@@ -10,7 +19,23 @@
 </ul>
 
 <div id= "featured">
-  <% @recipe_featured.each do |recipe| %>
+  <% if @recipe_featured.any? %>
+    <% @recipe_featured.each do |recipe| %>
+      <h1><%= link_to recipe.title, recipe %></h1>
+      <ul>
+        <li><%= recipe.recipe_type.name %></li>
+        <li><%= recipe.cuisine.name %></li>
+        <li><%= recipe.difficulty %></li>
+        <li><%= recipe.cook_time_min %></li>
+      </ul>
+    <% end %>
+  <% else %>
+    <p>Nenhuma receita em destaque</p>
+  <% end %>
+</div>
+
+<div id= "other_recipes">
+  <% @recipes.each do |recipe| %>
     <h1><%= link_to recipe.title, recipe %></h1>
     <ul>
       <li><%= recipe.recipe_type.name %></li>
@@ -20,13 +45,3 @@
     </ul>
   <% end %>
 </div>
-
-<% @recipes.each do |recipe| %>
-  <h1><%= link_to recipe.title, recipe %></h1>
-  <ul>
-    <li><%= recipe.recipe_type.name %></li>
-    <li><%= recipe.cuisine.name %></li>
-    <li><%= recipe.difficulty %></li>
-    <li><%= recipe.cook_time_min %></li>
-  </ul>
-<% end %>
