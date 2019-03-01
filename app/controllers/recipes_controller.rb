@@ -1,5 +1,6 @@
 class RecipesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  
   def index
     @recipes = Recipe.all
     @recipe_featured = Recipe.where(featured: true)
@@ -17,6 +18,7 @@ class RecipesController < ApplicationController
 
   def create
     @recipe = Recipe.new(recipe_params)
+    @recipe.user = current_user
     if @recipe.save 
       redirect_to @recipe
     else
@@ -33,10 +35,14 @@ class RecipesController < ApplicationController
     redirect_to root_path
   end
 
-  def edit
+  def edit    
     @recipe = Recipe.find(params[:id]) 
     @recipe_types = RecipeType.all 
     @cuisine = Cuisine.all
+    if @recipe.user != current_user  
+      flash[:errors] = "Acesso negado!"  
+      redirect_to root_path
+    end      
   end
 
   def update

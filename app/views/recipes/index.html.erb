@@ -9,6 +9,8 @@
 
 <% if user_signed_in? %>
   <%= link_to 'Enviar uma receita', new_recipe_path %>
+  <%= link_to 'Criar Lista de Receitas', new_list_path %>
+  <%= link_to 'Ver minhas listas', lists_path %>
 <% end %>
 
 <%= link_to 'Cadastrar tipo de receita', new_recipe_type_path %>

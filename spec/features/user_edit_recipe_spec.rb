@@ -2,6 +2,7 @@ require 'rails_helper'
 
 feature 'User update recipe' do
   scenario 'successfully' do
+    user = User.create!(email: 'user1@email.com', password: 'user123')
     recipe_type = RecipeType.create(name: 'Sobremesa')
     RecipeType.create(name: 'Entrada')
     cuisine = Cuisine.create(name: 'Brasileira')
@@ -9,8 +10,7 @@ feature 'User update recipe' do
     Recipe.create(title: 'Bolodecenoura', difficulty: 'Médio',
                   recipe_type: recipe_type, cuisine: cuisine,
                   cook_time: 50, ingredients: 'Farinha, açucar, cenoura',
-                  cook_method: 'Cozinhe a cenoura, corte em pedaços pequenos, misture com o restante dos ingredientes')
-                  user = User.create!(email: 'user1@email.com', password: 'user123')
+                  cook_method: 'Cozinhe a cenoura, corte em pedaços pequenos, misture com o restante dos ingredientes', user: user)
 
     # simula a ação do usuário
     login_as user, scope: :user
@@ -39,13 +39,13 @@ feature 'User update recipe' do
   end
 
   scenario 'and must fill in all fields' do
+    user = User.create!(email: 'user1@email.com', password: 'user123')
     recipe_type = RecipeType.create(name: 'Sobremesa')
     cuisine = Cuisine.create(name: 'Brasileira')
     Recipe.create(title: 'Bolodecenoura', difficulty: 'Médio',
                   recipe_type: recipe_type, cuisine: cuisine,
                   cook_time: 50, ingredients: 'Farinha, açucar, cenoura',
-                  cook_method: 'Cozinhe a cenoura, corte em pedaços pequenos, misture com o restante dos ingredientes')
-    user = User.create!(email: 'user1@email.com', password: 'user123')
+                  cook_method: 'Cozinhe a cenoura, corte em pedaços pequenos, misture com o restante dos ingredientes', user: user)
   
     # simula a ação do usuário
     login_as user, scope: :user
@@ -63,4 +63,57 @@ feature 'User update recipe' do
 
     expect(page).to have_content('Não foi possível salvar a receita')
   end
+
+  scenario 'user not edit recipe of the other user' do
+    user1 = User.create!(email: 'user1@email.com', password: 'user123')
+    recipe_type = RecipeType.create(name: 'Sobremesa')
+    RecipeType.create(name: 'Entrada')
+    cuisine = Cuisine.create(name: 'Brasileira')
+    Cuisine.create(name: 'Arabe')
+    recipe1 = Recipe.create(title: 'Bolodecenoura', difficulty: 'Médio',
+                  recipe_type: recipe_type, cuisine: cuisine,
+                  cook_time: 50, ingredients: 'Farinha, açucar, cenoura',
+                  cook_method: 'Cozinhe a cenoura, corte em pedaços pequenos, misture com o restante dos ingredientes', user: user1)
+
+    user2 = User.create!(email: 'user2@email.com', password: 'user123')
+    recipe2 = Recipe.create(title: 'Bolodechocolate', difficulty: 'Médio',
+                  recipe_type: recipe_type, cuisine: cuisine,
+                  cook_time: 50, ingredients: 'Farinha, açucar, chocolate',
+                  cook_method: 'Derreta o chocolate, corte em pedaços pequenos, misture com o restante dos ingredientes', user: user2)
+
+    # simula a ação do usuário
+    login_as user2, scope: :user
+    visit root_path
+    click_on 'Bolodecenoura'  
+   
+    expect(page).to_not have_link("Editar")
+
+  end
+
+  scenario 'user not access url edit recipe' do
+    user1 = User.create!(email: 'user1@email.com', password: 'user123')
+    recipe_type = RecipeType.create(name: 'Sobremesa')
+    RecipeType.create(name: 'Entrada')
+    cuisine = Cuisine.create(name: 'Brasileira')
+    Cuisine.create(name: 'Arabe')
+    recipe1 = Recipe.create(title: 'Bolodecenoura', difficulty: 'Médio',
+                  recipe_type: recipe_type, cuisine: cuisine,
+                  cook_time: 50, ingredients: 'Farinha, açucar, cenoura',
+                  cook_method: 'Cozinhe a cenoura, corte em pedaços pequenos, misture com o restante dos ingredientes', user: user1)
+
+    user2 = User.create!(email: 'user2@email.com', password: 'user123')
+    recipe2 = Recipe.create(title: 'Bolodechocolate', difficulty: 'Médio',
+                  recipe_type: recipe_type, cuisine: cuisine,
+                  cook_time: 50, ingredients: 'Farinha, açucar, chocolate',
+                  cook_method: 'Derreta o chocolate, corte em pedaços pequenos, misture com o restante dos ingredientes', user: user2)
+
+    # simula a ação do usuário
+    login_as user2, scope: :user
+    visit edit_recipe_path(recipe1)
+   
+    expect(current_path).to eq (root_path)
+    expect(page).to have_content('Acesso negado!')
+
+  end
+
 end

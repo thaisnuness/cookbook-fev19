@@ -11,5 +11,6 @@ Rails.application.routes.draw do
 
   resources :recipe_types
   resources :cuisines
+  resources :lists
 
 end

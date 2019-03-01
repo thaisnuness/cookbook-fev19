@@ -16,7 +16,9 @@
 <h3>Como Preparar</h3>
 <p><%= @recipe.cook_method %></p>
 
-<%= link_to 'Editar', edit_recipe_path(@recipe) %>
+<% if current_user == @recipe.user %>
+  <%= link_to 'Editar', edit_recipe_path(@recipe) %>
+<% end %>
 <%= link_to 'Excluir', recipe_path(@recipe), method: :delete %>
 <% if @recipe.featured? %>
   <%= link_to 'Remover Destaque', unfeatured_recipe_path(@recipe), method: :post %>
