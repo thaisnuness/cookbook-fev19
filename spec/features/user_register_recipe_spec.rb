@@ -7,7 +7,8 @@ feature 'User register recipe' do
     RecipeType.create(name: 'Entrada')
     Cuisine.create(name: 'Arabe')
     User.create!(email: 'user1@email.com', password: 'user123')
-
+    mailer_spy = class_spy(RecipesMailer)
+    stub_const('RecipesMailer', mailer_spy)
 
     # simula a ação do usuário
     
@@ -32,8 +33,9 @@ feature 'User register recipe' do
     attach_file 'Foto', Rails.root.join('spec', 'support', 'Tabule.jpg')
     click_on 'Enviar'
 
-
     # expectativas
+    recipe = Recipe.last
+    expect(RecipesMailer).to have_received(:notify_new_recipe).with(recipe.id)
     expect(page).to have_css('h1', text: 'Tabule')
     expect(page).to have_css('h3', text: 'Detalhes')
     expect(page).to have_css('p', text: 'Entrada')
